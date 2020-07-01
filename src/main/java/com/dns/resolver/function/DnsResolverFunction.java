@@ -283,12 +283,12 @@ public class DnsResolverFunction implements Function<DnsResolverInput, String> {
 		if (dnsResolverInput.getRule().equals(DnsResolverConstants.RULE_TYPE_EGRESS)) {
 			return securityGroup.getIpPermissionsEgress().stream()
 					.filter(rule -> rule.getIpv4Ranges().stream()
-							.anyMatch(ipRange -> ipRange.getDescription()
+							.anyMatch(ipRange -> StringUtils.trimToEmpty(ipRange.getDescription())
 									.startsWith(dnsResolverInput.getRuleDescriptionPrefix())))
 					.collect(Collectors.toList());
 		} else {
 			return securityGroup.getIpPermissions().stream().filter(rule -> rule.getIpv4Ranges().stream().anyMatch(
-					ipRange -> ipRange.getDescription().startsWith(dnsResolverInput.getRuleDescriptionPrefix())))
+					ipRange -> StringUtils.trimToEmpty(ipRange.getDescription()).startsWith(dnsResolverInput.getRuleDescriptionPrefix())))
 					.collect(Collectors.toList());
 		}
 	}
